@@ -1,69 +1,96 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function SamRobot({ thinking, happy, listening }) {
-  return (
-    <div
-      className={`robot-scene ${thinking ? "thinking" : ""} ${
-        happy ? "happy" : ""
-      } ${listening ? "listening" : ""}`}
-      role="img"
-      aria-label="SAM AI robot"
-    >
-      <div className="robot-spark spark-one">✦</div>
-      <div className="robot-spark spark-two">♡</div>
+const suggestions = [
+  "Tell me a joke",
+  "Explain this in simple terms",
+  "Give me study tips",
+  "Create a to-do list",
+  "Give me a motivational quote"
+];
 
-      <div className="robot">
+function SamRobot({ mode }) {
+  return (
+    <div className={`hero-robot ${mode}`}>
+      <div className="robot-glow" />
+      <span className="heart-float heart-one">♥</span>
+      <span className="heart-float heart-two">♡</span>
+      <span className="sparkle sparkle-one">✦</span>
+      <span className="sparkle sparkle-two">✧</span>
+
+      <div className="robot-character">
         <div className="robot-antenna"><span /></div>
-        <div className="robot-ear ear-left" />
-        <div className="robot-ear ear-right" />
+        <div className="robot-ear left-ear"><i /></div>
+        <div className="robot-ear right-ear"><i /></div>
 
         <div className="robot-head">
-          <div className="robot-forehead">
-            <span className="forehead-light" />
-            <span>SAM</span>
-          </div>
-
-          <div className="robot-face">
+          <div className="robot-top-label">SAM <span>✦</span></div>
+          <div className="robot-screen">
             <div className="robot-eyes">
               <span className="robot-eye"><i /></span>
               <span className="robot-eye"><i /></span>
             </div>
-            <div className="robot-cheeks"><span /><span /></div>
-            <div className="robot-mouth"><span /></div>
+            <div className="robot-blush"><i /><i /></div>
+            <div className="robot-smile" />
           </div>
         </div>
 
         <div className="robot-neck" />
 
-        <div className="robot-body">
-          <div className="robot-chest">
-            <span className="chest-light" />
-            <span className="chest-light" />
-            <span className="chest-light" />
-          </div>
-          <div className="robot-badge">♥</div>
+        <div className="robot-torso">
+          <div className="robot-heart">♥</div>
+          <div className="robot-chest-lights"><i /><i /><i /></div>
         </div>
 
-        <div className="robot-arm arm-left"><span className="robot-hand" /></div>
-        <div className="robot-arm arm-right"><span className="robot-hand" /></div>
-        <div className="robot-leg leg-left" />
-        <div className="robot-leg leg-right" />
-        <div className="robot-foot foot-left" />
-        <div className="robot-foot foot-right" />
+        <div className="robot-arm robot-arm-left">
+          <div className="robot-palm"><i /><i /><i /></div>
+        </div>
+        <div className="robot-arm robot-arm-right">
+          <div className="robot-palm" />
+        </div>
+
+        <div className="robot-leg robot-leg-left" />
+        <div className="robot-leg robot-leg-right" />
+        <div className="robot-foot robot-foot-left" />
+        <div className="robot-foot robot-foot-right" />
       </div>
 
-      <div className="robot-shadow" />
-      <div className="robot-status">
-        <span className="status-dot" />
-        {listening
-          ? "SAM is listening..."
-          : thinking
-          ? "SAM is thinking..."
-          : happy
-          ? "Happy to help!"
-          : "Your AI Buddy"}
+      <div className="robot-floor-shadow" />
+
+      <div className="robot-speech-bubble">
+        {mode === "listening"
+          ? "I'm listening! 🎙️"
+          : mode === "thinking"
+          ? "Let me think... 💭"
+          : mode === "speaking"
+          ? "I'm talking! 💜"
+          : "Hi there! I'm SAM 💜"}
       </div>
     </div>
+  );
+}
+
+function Icon({ name }) {
+  const paths = {
+    chat: <><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z" /></>,
+    people: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    explore: <><circle cx="12" cy="12" r="10" /><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z" /></>,
+    settings: <><circle cx="12" cy="12" r="3" /><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-1.9l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 1.8z" /></>,
+    send: <><path d="m22 2-7 20-4-9-9-4z" /><path d="M22 2 11 13" /></>,
+    mic: <><rect x="9" y="2" width="6" height="12" rx="3" /><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8" /></>,
+    search: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></>,
+    sound: <><path d="M11 5 6 9H2v6h4l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14" /></>,
+    plus: <><path d="M12 5v14M5 12h14" /></>,
+    image: <><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></>,
+    file: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M8 13h8M8 17h8" /></>,
+    sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></>
+  };
+
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+      className="icon" aria-hidden="true">
+      {paths[name] || paths.chat}
+    </svg>
   );
 }
 
@@ -71,15 +98,25 @@ export default function App() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [happy, setHappy] = useState(false);
   const [listening, setListening] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [voiceLanguage, setVoiceLanguage] = useState("ta-IN");
   const [voiceError, setVoiceError] = useState("");
+  const [activeTab, setActiveTab] = useState("Chat");
+  const [darkMode, setDarkMode] = useState(false);
 
   const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const robotMode = listening
+    ? "listening"
+    : loading
+    ? "thinking"
+    : speaking
+    ? "speaking"
+    : "idle";
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -87,45 +124,15 @@ export default function App() {
 
   useEffect(() => {
     return () => {
-      recognitionRef.current?.stop();
-
+      recognitionRef.current?.abort();
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
     };
   }, []);
 
-  function speakReply(text) {
-    if (!voiceEnabled || !("speechSynthesis" in window)) return;
-
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    const hasTamil = /[\u0B80-\u0BFF]/.test(text);
-    utterance.lang = hasTamil ? "ta-IN" : "en-IN";
-    utterance.rate = 1;
-    utterance.pitch = 1.08;
-
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find((voice) =>
-      hasTamil
-        ? voice.lang.toLowerCase().startsWith("ta")
-        : voice.lang.toLowerCase().startsWith("en-in")
-    );
-
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
-    }
-
-    utterance.onstart = () => setSpeaking(true);
-    utterance.onend = () => setSpeaking(false);
-    utterance.onerror = () => setSpeaking(false);
-
-    window.speechSynthesis.speak(utterance);
-  }
-
   function stopVoice() {
-    recognitionRef.current?.stop();
+    recognitionRef.current?.abort();
     setListening(false);
 
     if ("speechSynthesis" in window) {
@@ -133,6 +140,32 @@ export default function App() {
     }
 
     setSpeaking(false);
+  }
+
+  function speakReply(text) {
+    if (!voiceEnabled || !("speechSynthesis" in window)) return;
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const isTamil = /[\u0B80-\u0BFF]/.test(text);
+    utterance.lang = isTamil ? "ta-IN" : "en-IN";
+    utterance.rate = 0.96;
+    utterance.pitch = 1.12;
+
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find((voice) =>
+      isTamil
+        ? voice.lang.toLowerCase().startsWith("ta")
+        : voice.lang.toLowerCase().startsWith("en-in")
+    );
+
+    if (preferred) utterance.voice = preferred;
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
   }
 
   async function sendText(text) {
@@ -144,10 +177,9 @@ export default function App() {
     setMessages((old) => [...old, { role: "user", text: cleanText }]);
     setMessage("");
     setLoading(true);
-    setHappy(false);
 
     try {
-      const conversation = [
+      const history = [
         ...messages.map((item) => ({
           role: item.role === "user" ? "user" : "assistant",
           content: item.text
@@ -157,10 +189,8 @@ export default function App() {
 
       const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ messages: conversation })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history })
       });
 
       const data = await response.json();
@@ -175,7 +205,6 @@ export default function App() {
         "SAM could not reply. Please try again.";
 
       setMessages((old) => [...old, { role: "Sam", text: reply }]);
-      setHappy(true);
       speakReply(reply);
     } catch (error) {
       console.error("SAM chat error:", error);
@@ -204,16 +233,11 @@ export default function App() {
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setVoiceError(
-        "Voice recognition இந்த browser-ல் கிடைக்கவில்லை. Chrome-ல் முயற்சி செய்யுங்கள்."
-      );
+      setVoiceError("Voice recognition கிடைக்கவில்லை. Chrome browser-ல் முயற்சி செய்யுங்கள்.");
       return;
     }
 
-    if (loading) {
-      setVoiceError("SAM பதில் சொல்லி முடித்ததும் பேசலாம்.");
-      return;
-    }
+    if (loading) return;
 
     stopVoice();
 
@@ -223,215 +247,352 @@ export default function App() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.onstart = () => {
-      setListening(true);
-      setVoiceError("");
-    };
+    recognition.onstart = () => setListening(true);
 
     recognition.onresult = (event) => {
       const transcript = event.results?.[0]?.[0]?.transcript?.trim();
-
-      if (transcript) {
-        setMessage(transcript);
-        sendText(transcript);
-      }
+      if (transcript) sendText(transcript);
     };
 
     recognition.onerror = (event) => {
       setVoiceError(
         event.error === "not-allowed"
-          ? "Microphone permission கொடுக்கவும்."
-          : event.error === "no-speech"
-          ? "குரல் கேட்கவில்லை. மீண்டும் முயற்சி செய்யுங்கள்."
-          : `Voice error: ${event.error}`
+          ? "Microphone permission Allow செய்யுங்கள்."
+          : `Voice error: ${event.error}. மீண்டும் முயற்சி செய்யுங்கள்.`
       );
       setListening(false);
     };
 
     recognition.onend = () => setListening(false);
-
     recognitionRef.current = recognition;
 
     try {
       recognition.start();
-    } catch (error) {
+    } catch {
       setListening(false);
       setVoiceError("Microphone start ஆகவில்லை. மீண்டும் முயற்சி செய்யுங்கள்.");
     }
   }
 
+  function runSuggestion(text) {
+    setActiveTab("Chat");
+    sendText(text);
+  }
+
+  function handleFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setMessage((old) =>
+      `${old}${old ? "\n" : ""}I selected a file named "${file.name}". Please tell me how to analyze it.`
+    );
+    setVoiceError("File தேர்வு செய்யப்பட்டது. இந்த version-ல் file upload API இன்னும் இணைக்கப்படவில்லை.");
+    event.target.value = "";
+  }
+
+  const navItems = [
+    { label: "Chat", icon: "chat" },
+    { label: "Friends", icon: "people" },
+    { label: "Explore", icon: "explore" },
+    { label: "Settings", icon: "settings" }
+  ];
+
   return (
-    <main className="app">
-      <header className="app-header">
-        <div className="header-logo">🤖</div>
-        <div>
-          <h1>SAM AI Buddy <span>💜</span></h1>
-          <p>உங்கள் குட்டி AI நண்பன்!</p>
+    <main className={`sam-app ${darkMode ? "dark-mode" : ""}`}>
+      <header className="topbar">
+        <div className="brand">
+          <div className="brand-robot">🤖</div>
+          <div>
+            <h1>SAM AI <span>♥</span></h1>
+            <p>Your Cute AI Buddy</p>
+          </div>
         </div>
-        <div className="online-badge"><span /> Online</div>
+
+        <div className="top-search">
+          <Icon name="search" />
+          <input
+            aria-label="Search conversations"
+            placeholder="Search conversations, people..."
+            onChange={(event) => {
+              const value = event.target.value.toLowerCase();
+              if (value) setActiveTab("Chat");
+            }}
+          />
+        </div>
+
+        <button className="top-icon" title="Toggle theme" onClick={() => setDarkMode((v) => !v)}>
+          <Icon name="sun" />
+        </button>
+
+        <button className="top-icon notification" title="Notifications">♧</button>
+
+        <div className="profile-chip">
+          <div className="profile-avatar">S</div>
+          <div><strong>Sam User</strong><small><i /> Online</small></div>
+          <span>⌄</span>
+        </div>
       </header>
 
-      <section className="workspace">
-        <aside className="robot-panel">
-          <div className="robot-welcome">
-            <span className="welcome-pill">YOUR AI FRIEND</span>
-            <h2>Hi, I'm SAM!</h2>
-            <p>என்னிடம் பேசுங்கள். நான் கேட்டு பதில் சொல்கிறேன்!</p>
+      <div className="dashboard">
+        <aside className="sidebar">
+          <nav className="nav-menu">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                className={`nav-item ${activeTab === item.label ? "selected" : ""}`}
+                onClick={() => setActiveTab(item.label)}
+              >
+                <span className="nav-icon"><Icon name={item.icon} /></span>
+                <span>
+                  <strong>{item.label}</strong>
+                  <small>
+                    {item.label === "Chat"
+                      ? "Chat with SAM"
+                      : item.label === "Friends"
+                      ? "Chat with people"
+                      : item.label === "Explore"
+                      ? "Discover ideas"
+                      : "App preferences"}
+                  </small>
+                </span>
+              </button>
+            ))}
+          </nav>
+
+          <div className="sidebar-online">
+            <h3><i /> Online Users (1)</h3>
+            <div className="online-user">
+              <div className="mini-avatar">S</div>
+              <div><strong>Sam User</strong><small>You</small></div>
+              <span className="user-online-dot" />
+            </div>
+            <p className="online-note">
+              Friends chat will be enabled when Firebase login and real-time messaging are connected.
+            </p>
           </div>
 
-          <SamRobot
-            thinking={loading || speaking}
-            happy={happy}
-            listening={listening}
-          />
-
-          <div className="robot-tip">
-            <span>🎙️</span>
-            <p>Mic அழுத்திப் பேசுங்கள். SAM voice-ல் பதில் சொல்லும்.</p>
+          <div className="sidebar-bottom">
+            <span>👑</span>
+            <div><strong>SAM AI</strong><small>Always here to help you! 💜</small></div>
           </div>
         </aside>
 
-        <section className="chat-panel">
-          <div className="chat-heading">
-            <div className="chat-avatar">🤖</div>
-            <div>
-              <h2>SAM</h2>
-              <p>
+        <section className="robot-column">
+          <div className="robot-scene-card">
+            <div className="hero-copy">
+              <span>Your Cute AI Buddy</span>
+              <h2>Hi there!<br />I'm SAM <b>💜</b></h2>
+              <p>How can I help you today?</p>
+            </div>
+
+            <SamRobot mode={robotMode} />
+
+            <div className="feature-card feature-ideas">
+              <span>💡</span><div><strong>Get Ideas</strong><small>Study, work, coding, creative ideas...</small></div>
+            </div>
+            <div className="feature-card feature-summary">
+              <span>📄</span><div><strong>Summarize</strong><small>Long text and useful notes...</small></div>
+            </div>
+            <div className="feature-card feature-image">
+              <span>🖼️</span><div><strong>Analyze Images</strong><small>Image analysis can be added next.</small></div>
+            </div>
+            <div className="hero-decoration">♡ ✦ ♡</div>
+          </div>
+        </section>
+
+        <section className="chat-column">
+          <div className="chat-panel">
+            <header className="chat-header">
+              <div className="chat-avatar">🤖</div>
+              <div className="chat-title">
+                <h2>SAM AI <span><i /> Online</span></h2>
+                <p>Ask me anything... I'm here to help! 😊</p>
+              </div>
+              <button className="chat-header-button" title="Read latest reply" onClick={() => {
+                const last = [...messages].reverse().find((item) => item.role === "Sam");
+                if (last) speakReply(last.text);
+              }}><Icon name="sound" /></button>
+              <button className="chat-header-button" title="Stop voice" onClick={stopVoice}>↻</button>
+              <button className="chat-header-button" title="Clear conversation" onClick={() => {
+                stopVoice();
+                setMessages([]);
+              }}>⋮</button>
+            </header>
+
+            <div className="chat-body">
+              {activeTab !== "Chat" && (
+                <div className="feature-notice">
+                  <strong>{activeTab}</strong>
+                  <p>
+                    {activeTab === "Friends"
+                      ? "Real-time friend chat needs Firebase Authentication and a messages database. This is the next development phase."
+                      : activeTab === "Explore"
+                      ? "Use the suggestions on the right to explore SAM's AI capabilities."
+                      : "Choose Tamil or English voice and enable or disable spoken replies below."}
+                  </p>
+                  {activeTab === "Settings" && (
+                    <div className="settings-options">
+                      <label>
+                        Voice language
+                        <select value={voiceLanguage} onChange={(event) => setVoiceLanguage(event.target.value)}>
+                          <option value="ta-IN">Tamil</option>
+                          <option value="en-IN">English (India)</option>
+                        </select>
+                      </label>
+                      <label>
+                        <input type="checkbox" checked={voiceEnabled} onChange={(event) => setVoiceEnabled(event.target.checked)} />
+                        Read SAM replies aloud
+                      </label>
+                    </div>
+                  )}
+                  <button className="small-action" onClick={() => setActiveTab("Chat")}>Back to AI Chat</button>
+                </div>
+              )}
+
+              {activeTab === "Chat" && messages.length === 0 && (
+                <div className="empty-chat">
+                  <div className="empty-robot">🤖</div>
+                  <h3>Hello! I'm SAM 👋</h3>
+                  <p>I'm your AI buddy. I'm happy to see you! 💜</p>
+                  <p>What would you like to know or talk about today?</p>
+                  <button className="welcome-suggestion" onClick={() => runSuggestion("Introduce yourself in Tamil and English")}>
+                    ✨ Say hello to SAM
+                  </button>
+                </div>
+              )}
+
+              {activeTab === "Chat" && messages.map((item, index) => (
+                <div key={index} className={`message-row ${item.role === "user" ? "user-row" : "sam-row"}`}>
+                  {item.role !== "user" && <div className="message-avatar">🤖</div>}
+                  <div className="message-content">
+                    <div className="message-meta">
+                      <strong>{item.role === "user" ? "You" : "SAM"}</strong>
+                      <span>{new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                    </div>
+                    <div className="message-bubble"><p>{item.text}</p></div>
+                    {item.role !== "user" && (
+                      <div className="message-tools">
+                        <button title="Read reply aloud" onClick={() => speakReply(item.text)}><Icon name="sound" /> Listen</button>
+                        <button title="Copy reply" onClick={() => navigator.clipboard?.writeText(item.text)}>▢ Copy</button>
+                      </div>
+                    )}
+                  </div>
+                  {item.role === "user" && <div className="user-message-avatar">S</div>}
+                </div>
+              ))}
+
+              {loading && (
+                <div className="message-row sam-row">
+                  <div className="message-avatar">🤖</div>
+                  <div className="message-content">
+                    <div className="message-meta"><strong>SAM</strong><span>Thinking...</span></div>
+                    <div className="message-bubble typing"><i /><i /><i /></div>
+                  </div>
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            <div className="chat-composer-area">
+              <div className="voice-status">
+                <span className={listening ? "pulse-dot" : "status-dot"} />
                 {listening
-                  ? "Listening to you..."
+                  ? "Listening — speak now"
                   : speaking
                   ? "SAM is speaking..."
                   : loading
-                  ? "Thinking..."
-                  : "Always here to help"}
-              </p>
+                  ? "SAM is thinking..."
+                  : "Ready to chat"}
+                <label className="voice-language">
+                  <span>Language</span>
+                  <select value={voiceLanguage} onChange={(event) => setVoiceLanguage(event.target.value)} disabled={listening}>
+                    <option value="ta-IN">தமிழ்</option>
+                    <option value="en-IN">English</option>
+                  </select>
+                </label>
+              </div>
+
+              {voiceError && <p className="voice-error">{voiceError}</p>}
+
+              <form className="chat-composer" onSubmit={sendMessage}>
+                <button type="button" className="composer-attach" title="Choose file" onClick={() => fileInputRef.current?.click()}>
+                  <Icon name="plus" />
+                </button>
+                <input
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                  placeholder="Type a message to SAM..."
+                  aria-label="Type a message"
+                  disabled={loading}
+                />
+                <button type="button" className="composer-emoji" title="Add heart" onClick={() => setMessage((old) => old + " 💜")}>☺</button>
+                <button type="button" className={`composer-mic ${listening ? "mic-active" : ""}`} onClick={listening ? stopVoice : startListening} disabled={loading} title="Speak to SAM">
+                  <Icon name="mic" />
+                </button>
+                <button type="submit" className="composer-send" disabled={loading || !message.trim()} title="Send message">
+                  <Icon name="send" />
+                </button>
+                <input ref={fileInputRef} type="file" hidden accept="image/*,.pdf,.txt,.doc,.docx" onChange={handleFile} />
+              </form>
+
+              <div className="quick-prompts">
+                <button onClick={() => runSuggestion("Suggest some creative ideas")}>✨ Suggest Ideas</button>
+                <button onClick={() => runSuggestion("Explain this in simple terms")}>📝 Explain</button>
+                <button onClick={() => runSuggestion("Give me study tips")}>🧠 Study Tips</button>
+                <button onClick={() => runSuggestion("Give me a motivational quote")}>💡 Motivation</button>
+              </div>
             </div>
-            <button
-              type="button"
-              className={`voice-toggle ${voiceEnabled ? "active" : ""}`}
-              onClick={() => {
-                setVoiceEnabled((enabled) => !enabled);
-                if (voiceEnabled) stopVoice();
-              }}
-              title={voiceEnabled ? "Turn voice off" : "Turn voice on"}
-            >
-              {voiceEnabled ? "🔊" : "🔇"}
-            </button>
           </div>
-
-          <div className="chat-messages" aria-live="polite">
-            {messages.length === 0 && (
-              <div className="welcome-message">
-                <div className="welcome-icon">👋</div>
-                <h3>Hey there!</h3>
-                <p>I'm SAM, your AI buddy. Type or speak to start chatting.</p>
-                <div className="suggestion-list">
-                  <button type="button" onClick={() => setMessage("Introduce yourself")}>
-                    ✨ Introduce yourself
-                  </button>
-                  <button type="button" onClick={() => setMessage("Tell me something interesting")}>
-                    🌟 Tell me something interesting
-                  </button>
-                  <button type="button" onClick={() => setMessage("தமிழில் பேசலாமா?")}>
-                    💜 தமிழில் பேசலாமா?
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {messages.map((item, index) => (
-              <div
-                className={`message-row ${
-                  item.role === "user" ? "user-row" : "sam-row"
-                }`}
-                key={index}
-              >
-                {item.role !== "user" && <div className="message-avatar">🤖</div>}
-                <div className="message-bubble">
-                  <strong>{item.role === "user" ? "You" : "SAM"}</strong>
-                  <p>{item.text}</p>
-                  {item.role !== "user" && (
-                    <button
-                      type="button"
-                      className="replay-button"
-                      onClick={() => speakReply(item.text)}
-                      title="Play this reply"
-                    >
-                      🔊 Play reply
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            {loading && (
-              <div className="message-row sam-row">
-                <div className="message-avatar">🤖</div>
-                <div className="message-bubble">
-                  <strong>SAM</strong>
-                  <div className="typing-indicator">
-                    <span /><span /><span />
-                    <small>Thinking</small>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          <div className="voice-controls">
-            <label htmlFor="voice-language">Speech language</label>
-            <select
-              id="voice-language"
-              value={voiceLanguage}
-              onChange={(event) => setVoiceLanguage(event.target.value)}
-              disabled={listening}
-            >
-              <option value="ta-IN">தமிழ்</option>
-              <option value="en-IN">English</option>
-            </select>
-
-            <button
-              type="button"
-              className={`mic-button ${listening ? "is-listening" : ""}`}
-              onClick={listening ? stopVoice : startListening}
-              disabled={loading}
-            >
-              {listening ? "■ Stop listening" : "🎙️ Speak to SAM"}
-            </button>
-
-            {(speaking || listening) && (
-              <button type="button" className="stop-button" onClick={stopVoice}>
-                Stop
-              </button>
-            )}
-          </div>
-
-          {voiceError && (
-            <p className="voice-error" role="alert">{voiceError}</p>
-          )}
-
-          <form className="chat-form" onSubmit={sendMessage}>
-            <input
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              placeholder="Message SAM or tap the mic..."
-              aria-label="Message SAM"
-              disabled={loading}
-            />
-            <button type="submit" disabled={loading || !message.trim()}>
-              {loading ? "..." : "➤"}
-            </button>
-          </form>
-
-          <p className="chat-disclaimer">
-            SAM AI can make mistakes. Please verify important information.
-          </p>
         </section>
-      </section>
 
-      <footer className="app-footer">
-        Made with <span>♥</span> for you · SAM AI Buddy
+        <aside className="right-panel">
+          <section className="right-card">
+            <h3>⚡ Quick Actions</h3>
+            <button className="quick-action action-blue" onClick={() => { stopVoice(); setMessages([]); setActiveTab("Chat"); }}>
+              <span>＋</span> New Chat
+            </button>
+            <button className="quick-action action-pink" onClick={() => fileInputRef.current?.click()}>
+              <span>▧</span> Upload Image
+            </button>
+            <button className="quick-action action-green" onClick={() => runSuggestion("Help me analyze a document. Ask me to provide its contents.")}>
+              <span>▤</span> Analyze File
+            </button>
+            <button className="quick-action action-yellow" onClick={() => runSuggestion("Explain how to summarize a long document and give me a sample summary.")}>
+              <span>☰</span> Get Summary
+            </button>
+          </section>
+
+          <section className="right-card suggestions-card">
+            <h3>💡 Chat Suggestions</h3>
+            {suggestions.map((item) => (
+              <button key={item} className="suggestion-item" onClick={() => runSuggestion(item)}>
+                {item}<span>›</span>
+              </button>
+            ))}
+          </section>
+
+          <section className="right-card voice-card">
+            <h3>🎙️ Talk to SAM</h3>
+            <p>Speak in Tamil or English. SAM can read its replies aloud.</p>
+            <button className={`talk-button ${listening ? "talking" : ""}`} onClick={listening ? stopVoice : startListening} disabled={loading}>
+              <Icon name="mic" />
+              {listening ? "Stop listening" : "Speak to SAM"}
+            </button>
+            <button className="play-button" onClick={() => {
+              const last = [...messages].reverse().find((item) => item.role === "Sam");
+              if (last) speakReply(last.text);
+              else setVoiceError("முதலில் SAM-க்கு ஒரு message அனுப்புங்கள்.");
+            }}>
+              <Icon name="sound" /> Play latest reply
+            </button>
+          </section>
+        </aside>
+      </div>
+
+      <footer className="dashboard-footer">
+        <span>♥</span> SAM AI Buddy · Your cute AI companion
+        <span className="footer-right">Made for learning, ideas and friendly conversations</span>
       </footer>
     </main>
   );
