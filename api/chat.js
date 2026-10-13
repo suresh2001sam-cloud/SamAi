@@ -1,5 +1,13 @@
+
 export default async function handler(req, res) {
- console.log("SAM API CALLED:", req.method, req.url, "BODY:", JSON.stringify(req.body));
+  console.log(
+    "SAM API CALLED:",
+    req.method,
+    req.url,
+    "BODY:",
+    JSON.stringify(req.body)
+  );
+
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -32,7 +40,8 @@ export default async function handler(req, res) {
           Authorization: `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
+          model:
+            process.env.GROQ_MODEL || "openai/gpt-oss-120b",
           messages,
           temperature: 0.7
         })
@@ -44,24 +53,35 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const status = response.status;
 
+      console.error("Groq API Error:", {
+        status,
+        error: data.error?.message || data
+      });
+
       let message =
         data.error?.message || "Groq AI request failed.";
 
       if (status === 401) {
         message =
-          "Groq rejected the API key (401). Create a valid key in Groq Console, save it as GROQ_API_KEY in Vercel, then redeploy.";
+          "Groq rejected the API key (401). Check GROQ_API_KEY in Vercel.";
       } else if (status === 403) {
         message =
           "Groq access denied (403). Check your account and API access.";
+      } else if (status === 404) {
+        message =
+          "Groq model or endpoint not found (404). Check the configured model name.";
       } else if (status === 429) {
         message =
           "Groq rate limit or quota reached (429). Check your usage and limits.";
       }
 
-      return res.status(status).json({ error: message });
+      return res.status(status).json({
+        error: message
+      });
     }
 
     return res.status(200).json(data);
+
   } catch (error) {
     console.error("SAM AI API error:", error);
 
@@ -70,3 +90,4 @@ export default async function handler(req, res) {
     });
   }
 }
+```
