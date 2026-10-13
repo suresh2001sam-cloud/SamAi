@@ -42,17 +42,17 @@ export default function App() {
 
       const reply = data.choices?.[0]?.message?.content
         || data.reply
-        || "Milo could not reply. Please try again.";
+        || "Sam could not reply. Please try again.";
 
       setMessages((old) => [
         ...old,
-        { role: "milo", text: reply }
+        { role: "Sam", text: reply }
       ]);
     } catch (error) {
       setMessages((old) => [
         ...old,
         {
-          role: "milo",
+          role: "Sam",
           text: "AI connection இன்னும் சரியாகவில்லை. அமைப்புகளைச் சரிபார்க்கவும்."
         }
       ]);
@@ -63,27 +63,27 @@ export default function App() {
 
   return (
     <div className="app">
-      <h1>🤖 Milo AI Buddy 💜</h1>
+      <h1>🤖 Sam AI Buddy 💜</h1>
       <p>உங்கள் புதிய AI நண்பன்!</p>
 
       <div>
         {messages.map((item, index) => (
           <div className="message" key={index}>
             <strong>
-              {item.role === "user" ? "நீங்கள்" : "Milo"}:
+              {item.role === "user" ? "நீங்கள்" : "Sam"}:
             </strong>
             <p>{item.text}</p>
           </div>
         ))}
 
-        {loading && <p>🤖 Milo பதில் யோசிக்கிறது...</p>}
+        {loading && <p>🤖 Sam பதில் யோசிக்கிறது...</p>}
       </div>
 
       <form onSubmit={sendMessage}>
         <input
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="Milo-விடம் ஏதாவது கேளுங்கள்..."
+          placeholder="Sam-விடம் ஏதாவது கேளுங்கள்..."
           disabled={loading}
         />
         {" "}
