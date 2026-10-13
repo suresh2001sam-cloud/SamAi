@@ -1,4 +1,3 @@
-```javascript
 export default async function handler(req, res) {
   console.log("SAM API CALLED:", req.method, req.url);
 
